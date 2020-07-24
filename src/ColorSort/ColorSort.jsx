@@ -23,20 +23,35 @@ export default class ColorSort extends React.Component {
         this.setState({array})
     }
 
+    bubbleSort() {}
+
+    mergeSort() {}
+
+    quickSort() {}
+
     render() {
         const {array} = this.state;
 
         return (
-            <div className="bar-container">
-                {array.map((value, idx) => (
-                    <div 
-                        className="array-bar"
-                        key={idx}
-                        style={{backgroundColor: `hsl(${value}, 100%, 50%)`,
-                                width: `${window.innerWidth * 0.005}px`,
-                                margin: `${window.innerWidth * .002}px`}}></div>
-                ))}
-            </div>
+            <>
+                <div className="tool-bar">
+                    <button onClick={() => this.resetArray()}>Generate New Array</button>
+                    <button onClick={() => this.bubbleSort()}>Bubble Sort</button>
+                    <button onClick={() => this.mergeSort()}>Merge Sort</button>
+                    <button onClick={() => this.quickSort()}>Quick Sort</button>
+                </div>
+                
+                <div className="bar-container">    
+                    {array.map((value, idx) => (
+                        <div 
+                            className="array-bar"
+                            key={idx}
+                            style={{backgroundColor: `hsl(${value}, 100%, 50%)`,
+                                    width: `${window.innerWidth * 0.005}px`,
+                                    margin: `${window.innerWidth * .002}px`}}></div>
+                    ))} 
+                </div>
+            </>
         );
     }
 

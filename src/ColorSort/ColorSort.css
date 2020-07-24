@@ -1,12 +1,27 @@
-body {
-    height: 100%;
+.tool-bar {
+    margin: 30px;
 }
-.bar-container {
-    height: 100px;
+
+button {
+    background-color: black;
+    border: none;
+    border-radius: 10px;
+    color: white;
+    margin: 0 10px;
+    padding: 5px 15px;
 }
+
+button:hover {
+    cursor: pointer;
+}
+
+button:focus {
+    outline: 0;
+}
+
 .array-bar {
     display: inline-block;
     margin: .5vw;
     width: .5vw;
-    height: 100vh;
+    height: 80vh;
 }
