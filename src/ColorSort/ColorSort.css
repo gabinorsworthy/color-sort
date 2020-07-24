@@ -1,0 +1,12 @@
+body {
+    height: 100%;
+}
+.bar-container {
+    height: 100px;
+}
+.array-bar {
+    display: inline-block;
+    margin: .5vw;
+    width: .5vw;
+    height: 100vh;
+}
