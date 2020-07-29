@@ -1,5 +1,6 @@
 import React from 'react';
 import './ColorSort.css';
+import {getBubbleSortAnimations} from '../sortingAlgorithms/bubbleSort.js'
 
 export default class ColorSort extends React.Component {
     constructor(props) {
@@ -23,7 +24,44 @@ export default class ColorSort extends React.Component {
         this.setState({array})
     }
 
-    bubbleSort() {}
+    // FIXME: REMOVE
+    testSortingAlgorithms() {
+        for (let i = 0; i < 100; i++) {
+          const array = [];
+          const length = randomInt(1, 1000);
+          for (let i = 0; i < length; i++) {
+            array.push(randomInt(-1000, 1000));
+          }
+          const javaScriptSortedArray = array.slice().sort((a, b) => a - b);
+          const sortedArray = getBubbleSortAnimations(array);
+          console.log(arraysAreEqual(javaScriptSortedArray, sortedArray));
+        }
+    }
+
+    
+    
+    bubbleSort() {
+        const animations = getBubbleSortAnimations(this.state.array);
+
+        console.log(animations);
+
+        for (let i = 0; i < animations.length; i++) {
+            const arrayBars = document.getElementsByClassName('array-bar');
+
+            setTimeout(() => {
+                const[barOneIdx, barTwoIdx] = animations[i];
+
+                const barOneStyle = arrayBars[barOneIdx].style;
+                const barTwoStyle = arrayBars[barTwoIdx].style;
+
+                let temp = barOneStyle.backgroundColor;
+                barOneStyle.backgroundColor = barTwoStyle.backgroundColor;
+                barTwoStyle.backgroundColor = temp;
+
+            }, i * 10);
+
+        }
+    }
 
     mergeSort() {}
 
@@ -47,8 +85,9 @@ export default class ColorSort extends React.Component {
                             className="array-bar"
                             key={idx}
                             style={{backgroundColor: `hsl(${value}, 100%, 50%)`,
-                                    width: `${window.innerWidth * 0.005}px`,
-                                    margin: `${window.innerWidth * .002}px`}}></div>
+                                    width: `${window.innerWidth * 0.005}px`,//}}></div>
+                                    //margin: `${window.innerWidth * .002}px`}}></div>
+                                    margin: `0px`}}></div>
                     ))} 
                 </div>
             </>
@@ -62,3 +101,13 @@ function randomInt(min, max) {
 }
 
 // export default App
+
+function arraysAreEqual(arrayOne, arrayTwo) {
+    if (arrayOne.length !== arrayTwo.length) return false;
+    for (let i = 0; i < arrayOne.length; i++) {
+      if (arrayOne[i] !== arrayTwo[i]) {
+        return false;
+      }
+    }
+    return true;
+}
