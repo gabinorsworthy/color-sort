@@ -1,7 +1,7 @@
 export function getBubbleSortAnimations(array) {
     let animations = [];
 
-    for (let i = 0; i < array.length; i++) {
+    for (let i = 0; i < array.length - 1; i++) {
         let swapped = false;
         
         for (let j = 0; j < (array.length - i - 1); j++) {
@@ -19,8 +19,6 @@ export function getBubbleSortAnimations(array) {
             break;
         }
     }
-    console.log(array);
     
     return animations;
-
 }
