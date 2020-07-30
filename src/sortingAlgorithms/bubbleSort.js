@@ -6,7 +6,6 @@ export function getBubbleSortAnimations(array) {
         
         for (let j = 0; j < (array.length - i - 1); j++) {
             animations.push([j, j + 1]);
-            animations.push([j, j + 1]);
 
             if (array[j] > array[j + 1]) {
                 let temp = array[j];
@@ -19,6 +18,8 @@ export function getBubbleSortAnimations(array) {
             else{
                 animations.push([j + 1, j + 1]);
             }
+
+            animations.push([j, j + 1]);
         }
 
         /* removed break for animation purpose

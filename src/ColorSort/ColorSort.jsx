@@ -80,13 +80,13 @@ export default class ColorSort extends React.Component {
                     barTwoStyle.height = '60vh';
                 }
                 else if (i % 3 == 1) {
-                    barOneStyle.height = '50vh';
-                    barTwoStyle.height = '60vh';
-                }
-                else{
                     var temp = barOneStyle.backgroundColor;
                     barOneStyle.backgroundColor = barTwoStyle.backgroundColor;
                     barTwoStyle.backgroundColor = temp;
+                }
+                else{
+                    barOneStyle.height = '50vh';
+                    barTwoStyle.height = '60vh';
                 }
             }, i * 5); 
         }
