@@ -19,9 +19,14 @@ button:focus {
     outline: 0;
 }
 
+.bar-container {
+    height: 90vh;
+}
+
 .array-bar {
     display: inline-block;
-    margin: .5vw;
-    width: .5vw;
-    height: 80vh;
+    vertical-align: top;
+    /*margin: .5vw;
+    width: .5vw;*/
+    height: 50vh;
 }
