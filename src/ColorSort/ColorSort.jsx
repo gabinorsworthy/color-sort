@@ -19,7 +19,7 @@ export default class ColorSort extends React.Component {
     resetArray() {
         const array = [];
         const styleArray = [];
-        const arrayBars = document.getElementsByClassName('array-bar'); // FIXME
+        const arrayBars = document.getElementsByClassName('array-bar');
 
         for (let i = 0; i < 100; i ++) {
             
@@ -30,15 +30,17 @@ export default class ColorSort extends React.Component {
 
             styleArray.push({
                 backgroundColor: `rgb(${rgb[0]}, ${rgb[1]}, ${rgb[2]})`,
-                width: `${window.innerWidth * 0.005}px`,
-                margin: `${window.innerWidth * .002}px`
+                width: `${window.innerWidth * 0.005}px`
+                //marginRight: `${window.innerWidth * .002}px`,
+                //marginLeft: `${window.innerWidth * .002}px`
             });
 
             // Had issue updating colors in render
             // Randomly, one color of the 100 wouldn't update in background color (but the value showed correct when added to class name)
             // This fix ensures the color is updated when a new array is generated
             if (arrayBars[i]) {
-                arrayBars[i].style.backgroundColor = `rgb(${rgb[0]}, ${rgb[1]}, ${rgb[2]})`; // FIXME
+                arrayBars[i].style.backgroundColor = `rgb(${rgb[0]}, ${rgb[1]}, ${rgb[2]})`;
+                arrayBars[i].style.height = '50vh';
             }
         }
         
@@ -46,7 +48,6 @@ export default class ColorSort extends React.Component {
     }
 
     // FIXME: REMOVE
-    
     testSortingAlgorithms() {
         for (let i = 0; i < 100; i++) {
           const array = [];
@@ -70,13 +71,24 @@ export default class ColorSort extends React.Component {
             const arrayBars = document.getElementsByClassName('array-bar');
 
             const[barOneIdx, barTwoIdx] = animations[i];
-
             const barOneStyle = arrayBars[barOneIdx].style;
             const barTwoStyle = arrayBars[barTwoIdx].style;
 
-            var temp = barOneStyle.backgroundColor;
-            barOneStyle.backgroundColor = barTwoStyle.backgroundColor;
-            barTwoStyle.backgroundColor = temp;
+            setTimeout(() => {
+                if (i % 3 == 0) {
+                    barOneStyle.height = '60vh';
+                    barTwoStyle.height = '60vh';
+                }
+                else if (i % 3 == 1) {
+                    barOneStyle.height = '50vh';
+                    barTwoStyle.height = '60vh';
+                }
+                else{
+                    var temp = barOneStyle.backgroundColor;
+                    barOneStyle.backgroundColor = barTwoStyle.backgroundColor;
+                    barTwoStyle.backgroundColor = temp;
+                }
+            }, i * 5); 
         }
     }
 
