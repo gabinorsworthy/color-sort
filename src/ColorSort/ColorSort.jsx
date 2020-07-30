@@ -8,6 +8,7 @@ export default class ColorSort extends React.Component {
 
         this.state = {
             array: [],
+            styleArray: []
         };
     }
 
@@ -16,15 +17,36 @@ export default class ColorSort extends React.Component {
     }
 
     resetArray() {
-        const array = []
-        for (let i = 0; i < 100; i ++) {
-            array.push(randomInt(0, 360));
-        }
+        const array = [];
+        const styleArray = [];
+        const arrayBars = document.getElementsByClassName('array-bar'); // FIXME
 
-        this.setState({array})
+        for (let i = 0; i < 100; i ++) {
+            
+            var randomHue = randomInt(0, 359);
+            array.push(randomHue);
+
+            var rgb = hsl_to_rgb(randomHue, 1, .5);
+
+            styleArray.push({
+                backgroundColor: `rgb(${rgb[0]}, ${rgb[1]}, ${rgb[2]})`,
+                width: `${window.innerWidth * 0.005}px`,
+                margin: `${window.innerWidth * .002}px`
+            });
+
+            // Had issue updating colors in render
+            // Randomly, one color of the 100 wouldn't update in background color (but the value showed correct when added to class name)
+            // This fix ensures the color is updated when a new array is generated
+            if (arrayBars[i]) {
+                arrayBars[i].style.backgroundColor = `rgb(${rgb[0]}, ${rgb[1]}, ${rgb[2]})`; // FIXME
+            }
+        }
+        
+        this.setState({array, styleArray});
     }
 
     // FIXME: REMOVE
+    
     testSortingAlgorithms() {
         for (let i = 0; i < 100; i++) {
           const array = [];
@@ -37,29 +59,24 @@ export default class ColorSort extends React.Component {
           console.log(arraysAreEqual(javaScriptSortedArray, sortedArray));
         }
     }
+    
 
     
     
     bubbleSort() {
         const animations = getBubbleSortAnimations(this.state.array);
 
-        console.log(animations);
-
         for (let i = 0; i < animations.length; i++) {
             const arrayBars = document.getElementsByClassName('array-bar');
 
-            setTimeout(() => {
-                const[barOneIdx, barTwoIdx] = animations[i];
+            const[barOneIdx, barTwoIdx] = animations[i];
 
-                const barOneStyle = arrayBars[barOneIdx].style;
-                const barTwoStyle = arrayBars[barTwoIdx].style;
+            const barOneStyle = arrayBars[barOneIdx].style;
+            const barTwoStyle = arrayBars[barTwoIdx].style;
 
-                let temp = barOneStyle.backgroundColor;
-                barOneStyle.backgroundColor = barTwoStyle.backgroundColor;
-                barTwoStyle.backgroundColor = temp;
-
-            }, i * 10);
-
+            var temp = barOneStyle.backgroundColor;
+            barOneStyle.backgroundColor = barTwoStyle.backgroundColor;
+            barTwoStyle.backgroundColor = temp;
         }
     }
 
@@ -68,7 +85,7 @@ export default class ColorSort extends React.Component {
     quickSort() {}
 
     render() {
-        const {array} = this.state;
+        //const {styleArray} = this.state;
 
         return (
             <>
@@ -80,18 +97,20 @@ export default class ColorSort extends React.Component {
                 </div>
                 
                 <div className="bar-container">    
-                    {array.map((value, idx) => (
+                    {this.state.styleArray.map((value, idx) => (
                         <div 
-                            className="array-bar"
+                            className={`array-bar ${value.backgroundColor}`}
                             key={idx}
-                            style={{backgroundColor: `hsl(${value}, 100%, 50%)`,
+                            style={value}></div>
+                                    /*{backgroundColor: `rgb(${value[0]}, ${value[1]}, ${value[2]})`,
                                     width: `${window.innerWidth * 0.005}px`,//}}></div>
                                     //margin: `${window.innerWidth * .002}px`}}></div>
-                                    margin: `0px`}}></div>
+                                    margin: `0px`}*/
                     ))} 
                 </div>
             </>
         );
+        
     }
 
 }
@@ -110,4 +129,47 @@ function arraysAreEqual(arrayOne, arrayTwo) {
       }
     }
     return true;
+}
+
+// https://stackoverflow.com/questions/2353211/hsl-to-rgb-color-conversion
+function hsl_to_rgb(h, s, l) {
+    var r, g, b;
+
+    var C = (1 - Math.abs(2 * l - 1)) * s;
+    var X = C * (1 - Math.abs(((h / 60) % 2) - 1))
+    var m = l - (C / 2)
+
+    if (h < 60) {r = C; g = X; b = 0;}
+    else if (h < 120) {r = X; g = C; b = 0;}
+    else if (h < 180) {r = 0; g = C; b = X;}
+    else if (h < 240) {r = 0; g = X; b = C;}
+    else if (h < 300) {r = X; g = 0; b = C;}
+    else {r = C; g = 0; b = X;}
+
+    return [Math.round((r + m) * 255), Math.round((g + m) * 255), Math.round((b + m) * 255)];
+    /*
+    h = h / 360;
+
+    if(s === 0){
+        r = g = b = l; // achromatic
+    }else{
+        var hue2rgb = function hue2rgb(p, q, t){
+            if(t < 0) t += 1;
+            if(t > 1) t -= 1;
+            if(t < 1/6) return p + (q - p) * 6 * t;
+            if(t < 1/2) return q;
+            if(t < 2/3) return p + (q - p) * (2/3 - t) * 6;
+            return p;
+        }
+
+        var q = l < 0.5 ? l * (1 + s) : l + s - l * s;
+        var p = 2 * l - q;
+        r = hue2rgb(p, q, h + 1/3);
+        g = hue2rgb(p, q, h);
+        b = hue2rgb(p, q, h - 1/3);
+    }
+
+    //return [Math.round(r * 255), Math.round(g * 255), Math.round(b * 255)];
+    return [Math.min(Math.floor(r * 256), 255), Math.min(Math.floor(g * 256), 255), Math.min(Math.floor(b * 256), 255)];
+    */
 }
