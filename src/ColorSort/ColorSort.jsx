@@ -1,6 +1,7 @@
 import React from 'react';
 import './ColorSort.css';
 import {getBubbleSortAnimations} from '../sortingAlgorithms/bubbleSort.js'
+import {getQuickSortAnimations} from '../sortingAlgorithms/quickSort.js'
 
 export default class ColorSort extends React.Component {
     constructor(props) {
@@ -56,7 +57,7 @@ export default class ColorSort extends React.Component {
             array.push(randomInt(-1000, 1000));
           }
           const javaScriptSortedArray = array.slice().sort((a, b) => a - b);
-          const sortedArray = getBubbleSortAnimations(array);
+          const sortedArray = getQuickSortAnimations(array);
           console.log(arraysAreEqual(javaScriptSortedArray, sortedArray));
         }
     }
@@ -94,7 +95,12 @@ export default class ColorSort extends React.Component {
 
     mergeSort() {}
 
-    quickSort() {}
+    quickSort() {
+        //const javaScriptSortedArray = this.state.array
+        //const sortedArray = getQuickSortAnimations(this.state.array);
+        //console.log(sortedArray);
+        this.testSortingAlgorithms();
+    }
 
     render() {
         //const {styleArray} = this.state;
