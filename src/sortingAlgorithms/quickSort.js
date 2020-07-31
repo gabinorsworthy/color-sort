@@ -1,19 +1,13 @@
 export function getQuickSortAnimations(array) {
-    //console.log(array);
     let animations = [];
        
     quickSort(array, 0, array.length - 1, animations);
 
-    //console.log(array);
-    console.log(animations);
     return animations;
-
 }
 
 
 function quickSort(array, low, high, animations) {
-    //console.log(low, high);
-    //console.log(array);
 
     if (low < high) {
         var partitionIdx = partition(array, low, high, animations);
@@ -70,13 +64,11 @@ function partition(array, low, high, animations) {
         }
     }
     
-    var partitionIdx = i;
-    
-    
     if ((j >= low) && (i != high)) {
         animations.push(['changeHeight', j, i]);
     }
-    
+
+    var partitionIdx = i;
     array[high] = array[partitionIdx];
     array[partitionIdx] = pivot;
 
