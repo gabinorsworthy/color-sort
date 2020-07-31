@@ -96,10 +96,7 @@ export default class ColorSort extends React.Component {
     mergeSort() {}
 
     quickSort() {
-        //this.testSortingAlgorithms();
-        //const animations = [];
         const animations = getQuickSortAnimations(this.state.array);
-        //console.log(animations);
 
         for (let i = 0; i < animations.length; i++) {
             const arrayBars = document.getElementsByClassName('array-bar');
@@ -145,8 +142,6 @@ export default class ColorSort extends React.Component {
     }
 
     render() {
-        //const {styleArray} = this.state;
-
         return (
             <>
                 <div className="tool-bar">
@@ -162,10 +157,6 @@ export default class ColorSort extends React.Component {
                             className={`array-bar ${value.backgroundColor}`}
                             key={idx}
                             style={value}></div>
-                                    /*{backgroundColor: `rgb(${value[0]}, ${value[1]}, ${value[2]})`,
-                                    width: `${window.innerWidth * 0.005}px`,//}}></div>
-                                    //margin: `${window.innerWidth * .002}px`}}></div>
-                                    margin: `0px`}*/
                     ))} 
                 </div>
             </>
@@ -179,8 +170,7 @@ function randomInt(min, max) {
     return Math.floor(Math.random() * (max - min + 1) + min);
 }
 
-// export default App
-
+// FIXME: DELETE
 function arraysAreEqual(arrayOne, arrayTwo) {
     if (arrayOne.length !== arrayTwo.length) return false;
     for (let i = 0; i < arrayOne.length; i++) {
@@ -207,29 +197,4 @@ function hsl_to_rgb(h, s, l) {
     else {r = C; g = 0; b = X;}
 
     return [Math.round((r + m) * 255), Math.round((g + m) * 255), Math.round((b + m) * 255)];
-    /*
-    h = h / 360;
-
-    if(s === 0){
-        r = g = b = l; // achromatic
-    }else{
-        var hue2rgb = function hue2rgb(p, q, t){
-            if(t < 0) t += 1;
-            if(t > 1) t -= 1;
-            if(t < 1/6) return p + (q - p) * 6 * t;
-            if(t < 1/2) return q;
-            if(t < 2/3) return p + (q - p) * (2/3 - t) * 6;
-            return p;
-        }
-
-        var q = l < 0.5 ? l * (1 + s) : l + s - l * s;
-        var p = 2 * l - q;
-        r = hue2rgb(p, q, h + 1/3);
-        g = hue2rgb(p, q, h);
-        b = hue2rgb(p, q, h - 1/3);
-    }
-
-    //return [Math.round(r * 255), Math.round(g * 255), Math.round(b * 255)];
-    return [Math.min(Math.floor(r * 256), 255), Math.min(Math.floor(g * 256), 255), Math.min(Math.floor(b * 256), 255)];
-    */
 }
