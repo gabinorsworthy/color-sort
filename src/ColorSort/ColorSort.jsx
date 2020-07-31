@@ -96,10 +96,52 @@ export default class ColorSort extends React.Component {
     mergeSort() {}
 
     quickSort() {
-        //const javaScriptSortedArray = this.state.array
-        //const sortedArray = getQuickSortAnimations(this.state.array);
-        //console.log(sortedArray);
-        this.testSortingAlgorithms();
+        //this.testSortingAlgorithms();
+        //const animations = [];
+        const animations = getQuickSortAnimations(this.state.array);
+        //console.log(animations);
+
+        for (let i = 0; i < animations.length; i++) {
+            const arrayBars = document.getElementsByClassName('array-bar');
+
+            const animationTask = animations[i][0];
+            const barOneIdx = animations[i][1];
+            const barTwoIdx = animations[i][2]
+
+            const barOneStyle = arrayBars[barOneIdx].style;
+            const barTwoStyle = arrayBars[barTwoIdx].style;
+
+            setTimeout(() => {
+                if (animationTask == 'piv') {
+                    barOneStyle.height = '70vh';
+                }
+                else if (animationTask == 'incHeight') {
+                    barOneStyle.height = '60vh';
+                    barTwoStyle.height = '60vh';
+                }
+                else if (animationTask == 'changeHeight') {
+                    barOneStyle.height = '50vh';
+                    barTwoStyle.height = '60vh';
+                }
+                else if (animationTask == 'changeColor') {
+                    var temp = barOneStyle.backgroundColor;
+                    barOneStyle.backgroundColor = barTwoStyle.backgroundColor;
+                    barTwoStyle.backgroundColor = temp;
+                }
+                else if (animationTask == 'swapPivot'){
+                    var temp2 = barOneStyle.backgroundColor;
+                    barOneStyle.backgroundColor = barTwoStyle.backgroundColor;
+                    barTwoStyle.backgroundColor = temp2;
+                }
+                else if (animationTask == 'changeHeightFinal') {
+                    barOneStyle.height = '50vh';
+                    barTwoStyle.height = '80vh';
+                }
+                else if (animationTask == 'matchPivotHeight') {
+                    barTwoStyle.height = '70vh';
+                }
+            }, i * 10); 
+        }
     }
 
     render() {
