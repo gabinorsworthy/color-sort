@@ -16,6 +16,8 @@ function quickSort(array, low, high, animations) {
         quickSort(array, partitionIdx + 1, high, animations);
     }
     else if (low < array.length) {
+        // changes item in correct location to final height
+        // denoting that the bar is in it's final location
         animations.push(['changeHeightFinal', low, low]);  
     }
     
@@ -27,7 +29,9 @@ function partition(array, low, high, animations) {
     var i = low;
     var j = high - 1;
 
+    // increases the pivot height
     animations.push(['piv', high, high]);
+    // increases the height of the bars being compared
     animations.push(['incHeight', i, j]);
 
     while (true) {
@@ -35,14 +39,18 @@ function partition(array, low, high, animations) {
         while (array[i] < pivot) {
             i++;
             if (!(i > j)) {
-                animations.push(['changeHeight', i - 1, i, 'i while']);
+                // decreases height of old point
+                // increases height of new point
+                animations.push(['changeHeight', i - 1, i]);
             }
         }
 
         while ((j > 0) && (array[j] > pivot)) {
             j--;
             if (!(i > j)){
-                animations.push(['changeHeight', j + 1, j, 'j while']);
+                // decreases height of old point
+                // increases height of new point
+                animations.push(['changeHeight', j + 1, j]);
             } 
         }
 
@@ -53,18 +61,22 @@ function partition(array, low, high, animations) {
             var temp = array[i];
             array[i] = array[j];
             array[j] = temp;
+            // swap colors
             animations.push(['changeColor', i, j]);
 
             i++;
             j--;
             if (!(i > j)) {
-                animations.push(['changeHeight', i - 1, i, 'change color']);
-                animations.push(['changeHeight', j + 1, j, 'change color']);
+                // decrease height of old points
+                // increase height of new points
+                animations.push(['changeHeight', i - 1, i]);
+                animations.push(['changeHeight', j + 1, j]);
             }   
         }
     }
     
     if ((j >= low) && (i != high)) {
+        // decreases height of location no longer being used if within range
         animations.push(['changeHeight', j, i]);
     }
 
@@ -72,8 +84,12 @@ function partition(array, low, high, animations) {
     array[high] = array[partitionIdx];
     array[partitionIdx] = pivot;
 
+    // matches bar to pivot bar height for comparison
     animations.push(['matchPivotHeight', high, partitionIdx]);
-    animations.push(['swapPivot', high, partitionIdx]);
+    // swaps the colors
+    animations.push(['changeColor', high, partitionIdx]);
+    // changes pivot height to normal
+    // increases partition point height to show it is in its final position
     animations.push(['changeHeightFinal', high, partitionIdx]);
 
     return partitionIdx;

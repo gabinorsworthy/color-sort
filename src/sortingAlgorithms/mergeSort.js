@@ -8,7 +8,6 @@ export function getMergeSortAnimations(array) {
        
     mergeSort(array, helper, 0, array.length - 1, animations);
 
-    //console.log(array);
     return animations;
 }
 
@@ -17,7 +16,6 @@ function mergeSort(array, helper, low, high, animations) {
 
     if (low < high) {
         var middle = Math.floor((low + high) / 2);
-        //console.log(low, high, middle);
 
         mergeSort(array, helper, low, middle, animations);
         mergeSort(array, helper, middle + 1, high, animations);
@@ -37,15 +35,21 @@ function merge(array, helper, low, middle, high, animations) {
     var current = low;
 
     while (helperLeft <= middle && helperRight <= high) {
+        // increases height of items being compared
         animations.push(['incHeight', helperLeft, helperRight]);
+
         if (current != helperLeft && current != helperRight) {
-            animations.push(['incHeightCurrent', current, current]);
+            // if current isn't equal to the items being compared
+            // increase its height to distinguish it
+            animations.push(['incHeightCurrent', current]);
         }
 
         if (helper[helperLeft] <= helper[helperRight]) {
             array[current] = helper[helperLeft];
 
+            // change colors
             animations.push(['changeColor', current, helper[helperLeft]]);
+            // decrease height of item no longer being used
             animations.push(['decHeight', helperLeft, helperRight]);
         
             helperLeft++;            
@@ -53,12 +57,15 @@ function merge(array, helper, low, middle, high, animations) {
         else {
             array[current] = helper[helperRight];
 
+            // change colors
             animations.push(['changeColor', current, helper[helperRight]]);
+            // decrease height of item no longer being used
             animations.push(['decHeight', helperLeft, helperRight]);
 
             helperRight++;
-        }
+        }  
 
+        // decrease height of item no longer being used
         animations.push(['decHeight', current, current]);
         current++;
 
@@ -70,8 +77,11 @@ function merge(array, helper, low, middle, high, animations) {
     for (let i = 0; i <= remaining; i++) {
         array[current + i] = helper[helperLeft + i];
 
+        // increase height of bar about to be changed
         animations.push(['incHeight', current + i, current + i]);
+        // change its color
         animations.push(['changeColor', current + i, helper[helperLeft + i]]);
+        // decrease the height of the bar as it is no longer being used
         animations.push(['decHeight', current + i, current + i]);
     }
 

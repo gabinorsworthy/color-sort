@@ -23,18 +23,21 @@ export default class ColorSort extends React.Component {
         const styleArray = [];
         const arrayBars = document.getElementsByClassName('array-bar');
 
-        for (let i = 0; i < 100; i ++) {
+        // creates an array of 180 items (fits well to screen) 
+        for (let i = 0; i < 180; i ++) {
             
-            var randomHue = randomInt(0, 359);
+            // gets random, valid hue
+            var randomHue = randomInt(0, 360);
             array.push(randomHue);
 
+            // converts hsl value to array of rgb values
             var rgb = hsl_to_rgb(randomHue, 1, .5);
 
+            // add color and width to style array
+            // used to create the new bars
             styleArray.push({
                 backgroundColor: `rgb(${rgb[0]}, ${rgb[1]}, ${rgb[2]})`,
                 width: `${window.innerWidth * 0.005}px`
-                //marginRight: `${window.innerWidth * .002}px`,
-                //marginLeft: `${window.innerWidth * .002}px`
             });
 
             // Had issue updating colors in render
@@ -49,19 +52,6 @@ export default class ColorSort extends React.Component {
         this.setState({array, styleArray});
     }
 
-    // FIXME: REMOVE
-    testSortingAlgorithms() {
-        for (let i = 0; i < 100; i++) {
-          const array = [];
-          const length = randomInt(1, 1000);
-          for (let i = 0; i < length; i++) {
-            array.push(randomInt(-1000, 1000));
-          }
-          const javaScriptSortedArray = array.slice().sort((a, b) => a - b);
-          const sortedArray = getMergeSortAnimations(array);
-          console.log(arraysAreEqual(javaScriptSortedArray, sortedArray));
-        }
-    }
     
 
     
@@ -77,40 +67,38 @@ export default class ColorSort extends React.Component {
             const barTwoStyle = arrayBars[barTwoIdx].style;
 
             setTimeout(() => {
+                // increase height of bars being compared
                 if (i % 3 === 0) {
                     barOneStyle.height = '60vh';
                     barTwoStyle.height = '60vh';
                 }
+                // swap the colors if necessary
                 else if (i % 3 === 1) {
                     var temp = barOneStyle.backgroundColor;
                     barOneStyle.backgroundColor = barTwoStyle.backgroundColor;
                     barTwoStyle.backgroundColor = temp;
                 }
+                // decrease height of bar no longer being used
                 else{
                     barOneStyle.height = '50vh';
-                    barTwoStyle.height = '60vh';
                 }
-            }, i * 5); 
+            }, i * 5);
         }
     }
 
     mergeSort() {
-        //this.testSortingAlgorithms();
         const animations = getMergeSortAnimations(this.state.array);
-        console.log(animations);
 
         for (let i = 0; i < animations.length; i++) {
             const arrayBars = document.getElementsByClassName('array-bar');
-            //console.log(arrayBars);
 
             const animationTask = animations[i][0];
             const barOneIdx = animations[i][1];
-            //const barTwoIdx = animations[i][2]
 
             const barOneStyle = arrayBars[barOneIdx].style;
-            //const barTwoStyle = arrayBars[barTwoIdx].style;
 
             setTimeout(() => {
+                // increase height of items being compared
                 if (animationTask === 'incHeight') {
                     const barTwoIdx = animations[i][2];
                     const barTwoStyle = arrayBars[barTwoIdx].style;
@@ -118,9 +106,12 @@ export default class ColorSort extends React.Component {
                     barOneStyle.height = '60vh';
                     barTwoStyle.height = '60vh';
                 }
+                // increase height of the location the color will change
+                // if it is not already equal to the items being compared
                 else if (animationTask == 'incHeightCurrent') {
                     barOneStyle.height = '70vh';
                 }
+                // decrease height of bars no longer being compared
                 else if (animationTask === 'decHeight') {
                     const barTwoIdx = animations[i][2];
                     const barTwoStyle = arrayBars[barTwoIdx].style;
@@ -128,14 +119,14 @@ export default class ColorSort extends React.Component {
                     barOneStyle.height = '50vh';
                     barTwoStyle.height = '50vh';
                 }
+                // change color at current location being filled
                 else if (animationTask === 'changeColor') {
                     const newColor = hsl_to_rgb(animations[i][2], 1, .5);
                     console.log(newColor);
 
                     barOneStyle.backgroundColor = `rgb(${newColor[0]}, ${newColor[1]}, ${newColor[2]})`;
-                    //barTwoStyle.height = '60vh';
                 }
-            }, i * 10);
+            }, i * 5);
         }
     }
 
@@ -153,35 +144,37 @@ export default class ColorSort extends React.Component {
             const barTwoStyle = arrayBars[barTwoIdx].style;
 
             setTimeout(() => {
+                // increase height of pivot at start
                 if (animationTask === 'piv') {
                     barOneStyle.height = '70vh';
                 }
+                // increase height of items being compared
                 else if (animationTask === 'incHeight') {
                     barOneStyle.height = '60vh';
                     barTwoStyle.height = '60vh';
                 }
+                // lower height of bar no longer being used
                 else if (animationTask === 'changeHeight') {
                     barOneStyle.height = '50vh';
                     barTwoStyle.height = '60vh';
                 }
+                // change color of two bars
                 else if (animationTask === 'changeColor') {
                     var temp = barOneStyle.backgroundColor;
                     barOneStyle.backgroundColor = barTwoStyle.backgroundColor;
                     barTwoStyle.backgroundColor = temp;
                 }
-                else if (animationTask === 'swapPivot'){
-                    var temp2 = barOneStyle.backgroundColor;
-                    barOneStyle.backgroundColor = barTwoStyle.backgroundColor;
-                    barTwoStyle.backgroundColor = temp2;
+                // match height of pivot
+                else if (animationTask === 'matchPivotHeight') {
+                    barTwoStyle.height = '70vh';
                 }
+                // decrease height of bar no longer being used
+                // will set bars in correct locations to taller than the others
                 else if (animationTask === 'changeHeightFinal') {
                     barOneStyle.height = '50vh';
                     barTwoStyle.height = '80vh';
                 }
-                else if (animationTask === 'matchPivotHeight') {
-                    barTwoStyle.height = '70vh';
-                }
-            }, i * 10); 
+            }, i * 5); 
         }
     }
 
@@ -210,22 +203,14 @@ export default class ColorSort extends React.Component {
 
 }
 
+// returns a random integer between min and max (inclusive)
 function randomInt(min, max) {
     return Math.floor(Math.random() * (max - min + 1) + min);
 }
 
-// FIXME: DELETE
-function arraysAreEqual(arrayOne, arrayTwo) {
-    if (arrayOne.length !== arrayTwo.length) return false;
-    for (let i = 0; i < arrayOne.length; i++) {
-      if (arrayOne[i] !== arrayTwo[i]) {
-        return false;
-      }
-    }
-    return true;
-}
-
 // https://stackoverflow.com/questions/2353211/hsl-to-rgb-color-conversion
+// Takes HSL values where 0 <= h <= 360, 0 <= s, l <= 1
+// returns an array of RGB value [r, g, b]
 function hsl_to_rgb(h, s, l) {
     var r, g, b;
 
