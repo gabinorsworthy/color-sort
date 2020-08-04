@@ -26,7 +26,5 @@ button:focus {
 .array-bar {
     display: inline-block;
     vertical-align: top;
-    /*margin: .5vw;
-    width: .5vw;*/
     height: 50vh;
 }

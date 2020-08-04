@@ -5,6 +5,7 @@ export function getBubbleSortAnimations(array) {
         //let swapped = false;
         
         for (let j = 0; j < (array.length - i - 1); j++) {
+            // increase height of items being compared
             animations.push([j, j + 1]);
 
             if (array[j] > array[j + 1]) {
@@ -13,12 +14,16 @@ export function getBubbleSortAnimations(array) {
                 array[j + 1] = temp;
                 //swapped = true;
 
+                // swap colors
                 animations.push([j, j+1]);
             }
             else{
+                // "swap" colors
+                // because they are the same item, there is no visual change
                 animations.push([j + 1, j + 1]);
             }
 
+            // decrease height of items no longer being compared
             animations.push([j, j + 1]);
         }
 
@@ -29,6 +34,7 @@ export function getBubbleSortAnimations(array) {
         }
         */
     }
+    // increase height of last, far left item
     animations.push([0,0]);
     
     return animations;
