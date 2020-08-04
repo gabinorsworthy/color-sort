@@ -2,6 +2,7 @@ import React from 'react';
 import './ColorSort.css';
 import {getBubbleSortAnimations} from '../sortingAlgorithms/bubbleSort.js'
 import {getQuickSortAnimations} from '../sortingAlgorithms/quickSort.js'
+import {getMergeSortAnimations} from '../sortingAlgorithms/mergeSort.js'
 
 export default class ColorSort extends React.Component {
     constructor(props) {
@@ -22,7 +23,7 @@ export default class ColorSort extends React.Component {
         const styleArray = [];
         const arrayBars = document.getElementsByClassName('array-bar');
 
-        for (let i = 0; i < 100; i ++) {
+        for (let i = 0; i < 10; i ++) {
             
             var randomHue = randomInt(0, 359);
             array.push(randomHue);
@@ -57,7 +58,7 @@ export default class ColorSort extends React.Component {
             array.push(randomInt(-1000, 1000));
           }
           const javaScriptSortedArray = array.slice().sort((a, b) => a - b);
-          const sortedArray = getQuickSortAnimations(array);
+          const sortedArray = getMergeSortAnimations(array);
           console.log(arraysAreEqual(javaScriptSortedArray, sortedArray));
         }
     }
@@ -76,11 +77,11 @@ export default class ColorSort extends React.Component {
             const barTwoStyle = arrayBars[barTwoIdx].style;
 
             setTimeout(() => {
-                if (i % 3 == 0) {
+                if (i % 3 === 0) {
                     barOneStyle.height = '60vh';
                     barTwoStyle.height = '60vh';
                 }
-                else if (i % 3 == 1) {
+                else if (i % 3 === 1) {
                     var temp = barOneStyle.backgroundColor;
                     barOneStyle.backgroundColor = barTwoStyle.backgroundColor;
                     barTwoStyle.backgroundColor = temp;
@@ -93,7 +94,54 @@ export default class ColorSort extends React.Component {
         }
     }
 
-    mergeSort() {}
+    mergeSort() {
+        this.testSortingAlgorithms();
+        const animations = getMergeSortAnimations(this.state.array);
+        console.log(animations);
+
+        for (let i = 0; i < animations.length; i++) {
+            const arrayBars = document.getElementsByClassName('array-bar');
+            //console.log(arrayBars);
+
+            const animationTask = animations[i][0];
+            const barOneIdx = animations[i][1];
+            const barTwoIdx = animations[i][2]
+
+            const barOneStyle = arrayBars[barOneIdx].style;
+            const barTwoStyle = arrayBars[barTwoIdx].style;
+
+            setTimeout(() => {
+                if (animationTask === 'current') {
+                    barOneStyle.height = '70vh';
+                }
+                else if (animationTask === 'incHeight') {
+                    barOneStyle.height = '60vh';
+                    barTwoStyle.height = '60vh';
+                }
+                else if (animationTask === 'changeHeight') {
+                    barOneStyle.height = '50vh';
+                    barTwoStyle.height = '60vh';
+                }
+                else if (animationTask === 'changeColor') {
+                    var temp = barOneStyle.backgroundColor;
+                    barOneStyle.backgroundColor = barTwoStyle.backgroundColor;
+                    barTwoStyle.backgroundColor = temp;
+                }
+                else if (animationTask === 'swapPivot'){
+                    var temp2 = barOneStyle.backgroundColor;
+                    barOneStyle.backgroundColor = barTwoStyle.backgroundColor;
+                    barTwoStyle.backgroundColor = temp2;
+                }
+                else if (animationTask === 'changeHeightFinal') {
+                    barOneStyle.height = '50vh';
+                    barTwoStyle.height = '80vh';
+                }
+                else if (animationTask === 'matchPivotHeight') {
+                    barTwoStyle.height = '70vh';
+                }
+            }, i * 1000);
+        }
+    }
 
     quickSort() {
         const animations = getQuickSortAnimations(this.state.array);
@@ -109,32 +157,32 @@ export default class ColorSort extends React.Component {
             const barTwoStyle = arrayBars[barTwoIdx].style;
 
             setTimeout(() => {
-                if (animationTask == 'piv') {
+                if (animationTask === 'piv') {
                     barOneStyle.height = '70vh';
                 }
-                else if (animationTask == 'incHeight') {
+                else if (animationTask === 'incHeight') {
                     barOneStyle.height = '60vh';
                     barTwoStyle.height = '60vh';
                 }
-                else if (animationTask == 'changeHeight') {
+                else if (animationTask === 'changeHeight') {
                     barOneStyle.height = '50vh';
                     barTwoStyle.height = '60vh';
                 }
-                else if (animationTask == 'changeColor') {
+                else if (animationTask === 'changeColor') {
                     var temp = barOneStyle.backgroundColor;
                     barOneStyle.backgroundColor = barTwoStyle.backgroundColor;
                     barTwoStyle.backgroundColor = temp;
                 }
-                else if (animationTask == 'swapPivot'){
+                else if (animationTask === 'swapPivot'){
                     var temp2 = barOneStyle.backgroundColor;
                     barOneStyle.backgroundColor = barTwoStyle.backgroundColor;
                     barTwoStyle.backgroundColor = temp2;
                 }
-                else if (animationTask == 'changeHeightFinal') {
+                else if (animationTask === 'changeHeightFinal') {
                     barOneStyle.height = '50vh';
                     barTwoStyle.height = '80vh';
                 }
-                else if (animationTask == 'matchPivotHeight') {
+                else if (animationTask === 'matchPivotHeight') {
                     barTwoStyle.height = '70vh';
                 }
             }, i * 10); 
