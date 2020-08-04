@@ -37,39 +37,42 @@ function merge(array, helper, low, middle, high, animations) {
     var current = low;
 
     while (helperLeft <= middle && helperRight <= high) {
-        animations.push(['incHeight', helperLeft, helperRight])
-        animations.push(['current', current, current]);
+        animations.push(['incHeight', helperLeft, helperRight]);
+        if (current != helperLeft && current != helperRight) {
+            animations.push(['incHeightCurrent', current, current]);
+        }
 
         if (helper[helperLeft] <= helper[helperRight]) {
             array[current] = helper[helperLeft];
-            animations.push(['matchPivotHeight', helperLeft, helperLeft]);
-            animations.push(['changeColor', current, helperLeft]);
 
-            helperLeft++;
-            if (helperLeft <= middle) {
-                animations.push(['changeHeight', helperLeft - 1, helperLeft]);
-            }
-            
+            animations.push(['changeColor', current, helper[helperLeft]]);
+            animations.push(['decHeight', helperLeft, helperRight]);
+        
+            helperLeft++;            
         }
         else {
             array[current] = helper[helperRight];
-            animations.push(['matchPivotHeight', helperRight, helperRight]);
-            animations.push(['changeColor', current, helperRight]);
+
+            animations.push(['changeColor', current, helper[helperRight]]);
+            animations.push(['decHeight', helperLeft, helperRight]);
 
             helperRight++;
-            if (helperRight <= high) {
-                animations.push(['changeHeight', helperRight - 1, helperRight]);
-            }
-            
         }
 
+        animations.push(['decHeight', current, current]);
         current++;
+
+        
 
     }
 
     var remaining = middle - helperLeft;
     for (let i = 0; i <= remaining; i++) {
         array[current + i] = helper[helperLeft + i];
+
+        animations.push(['incHeight', current + i, current + i]);
+        animations.push(['changeColor', current + i, helper[helperLeft + i]]);
+        animations.push(['decHeight', current + i, current + i]);
     }
 
 }
