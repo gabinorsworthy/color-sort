@@ -75,7 +75,7 @@ function partition(array, low, high, animations) {
         }
     }
     
-    if ((j >= low) && (i != high)) {
+    if ((j >= low) && (i !== high)) {
         // decreases height of location no longer being used if within range
         animations.push(['changeHeight', j, i]);
     }

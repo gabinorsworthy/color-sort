@@ -38,7 +38,7 @@ function merge(array, helper, low, middle, high, animations) {
         // increases height of items being compared
         animations.push(['incHeight', helperLeft, helperRight]);
 
-        if (current != helperLeft && current != helperRight) {
+        if (current !== helperLeft && current !== helperRight) {
             // if current isn't equal to the items being compared
             // increase its height to distinguish it
             animations.push(['incHeightCurrent', current]);
