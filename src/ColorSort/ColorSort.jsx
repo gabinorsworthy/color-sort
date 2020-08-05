@@ -1,5 +1,7 @@
-import React from 'react';
-import './ColorSort.css';
+import React from 'react'
+import noUiSlider from 'nouislider'
+import './ColorSort.css'
+import 'nouislider/distribute/nouislider.css'
 import {getBubbleSortAnimations} from '../sortingAlgorithms/bubbleSort.js'
 import {getQuickSortAnimations} from '../sortingAlgorithms/quickSort.js'
 import {getMergeSortAnimations} from '../sortingAlgorithms/mergeSort.js'
@@ -10,28 +12,107 @@ export default class ColorSort extends React.Component {
 
         this.state = {
             array: [],
-            styleArray: []
+            styleArray: [],
+            speed: 5,
+            saturation: 1,
+            lightness: .5
         };
     }
 
     componentDidMount() {
         this.resetArray();
+
+
+        // create input sliders
+        var speedSlider = document.getElementById('speedSlider');
+        var sizeSlider = document.getElementById('sizeSlider');
+        var hueSlider = document.getElementById('hueSlider');
+        var saturationSlider = document.getElementById('saturationSlider');
+        var lightnessSlider = document.getElementById('lightnessSlider');
+
+        noUiSlider.create(speedSlider, {
+            start:[5],
+            step: 5,
+            range: {
+                'min': 1,
+                'max': 100
+            }
+        })
+
+        noUiSlider.create(sizeSlider, {
+            start:[100],
+            step: 1,
+            range: {
+                'min': 2,
+                'max': 280
+            }
+        })
+
+        noUiSlider.create(hueSlider, {
+            start:[0, 360],
+            step: 1,
+            connect: true,
+            range: {
+                'min': 0,
+                'max': 360
+            }
+        })
+
+        noUiSlider.create(saturationSlider, {
+            start:[1],
+            step: .01,
+            range: {
+                'min': 0,
+                'max': 1
+            }
+        })
+
+        noUiSlider.create(lightnessSlider, {
+            start:[.5],
+            step: .01,
+            range: {
+                'min': 0,
+                'max': 1
+            }
+        })
     }
 
     resetArray() {
+        var speed = 5;
+        var size = 100;
+        var hue = [0, 360];
+        var saturation = 1;
+        var lightness = .5;
+
+        // set values based on input sliders
+        if (this.state.array.length > 0) {
+            console.log('update');
+            var speedSlider = document.getElementById('speedSlider');
+            var sizeSlider = document.getElementById('sizeSlider');
+            var hueSlider = document.getElementById('hueSlider');
+            var saturationSlider = document.getElementById('saturationSlider');
+            var lightnessSlider = document.getElementById('lightnessSlider');
+            
+            speed = Number(speedSlider.noUiSlider.get());
+            size = Number(sizeSlider.noUiSlider.get());
+            hue = [Number(hueSlider.noUiSlider.get()[0]), Number(hueSlider.noUiSlider.get()[1])];
+            saturation = Number(saturationSlider.noUiSlider.get());
+            lightness = Number(lightnessSlider.noUiSlider.get());
+        }
+
         const array = [];
         const styleArray = [];
         const arrayBars = document.getElementsByClassName('array-bar');
 
         // creates an array of 180 items (fits well to screen) 
-        for (let i = 0; i < 180; i ++) {
+        for (let i = 0; i < size; i ++) {
             
             // gets random, valid hue
-            var randomHue = randomInt(0, 360);
+            var randomHue = randomInt(hue[0], hue[1]);
             array.push(randomHue);
 
             // converts hsl value to array of rgb values
-            var rgb = hsl_to_rgb(randomHue, 1, .5);
+            var rgb = hsl_to_rgb(randomHue, saturation, lightness);
 
             // add color and width to style array
             // used to create the new bars
@@ -49,7 +130,9 @@ export default class ColorSort extends React.Component {
             }
         }
         
-        this.setState({array, styleArray});
+        this.setState({array, styleArray, speed, saturation, lightness});
+
+        
     }
 
     
@@ -58,7 +141,9 @@ export default class ColorSort extends React.Component {
     
     bubbleSort() {
         const animations = getBubbleSortAnimations(this.state.array);
+        const speed = this.state.speed;
 
+        // disable buttons while sort is happening
         const elements = document.getElementsByTagName('button');
         for (let j = 0; j < elements.length; j++) {
             elements[j].disabled = true;
@@ -88,28 +173,29 @@ export default class ColorSort extends React.Component {
                 else{
                     barOneStyle.height = '50vh';
                 }
-            }, i * 5);
+            }, i * speed);
         }
 
+        // enable buttons again
         setTimeout(() => {
             for (let j = 0; j < elements.length; j++) {
                 elements[j].disabled = false;
                 elements[j].style.cursor = `pointer`;
             }
-        }, animations.length * 5)
+        }, animations.length * speed)
     }
 
     mergeSort() {
         const animations = getMergeSortAnimations(this.state.array);
-
+        const speed = this.state.speed;
         
+        // disable buttons while sort is running
         const elements = document.getElementsByTagName('button');
         for (let j = 0; j < elements.length; j++) {
             elements[j].disabled = true;
             elements[j].style.cursor = `not-allowed`;
         }
         
-
         for (let i = 0; i < animations.length; i++) {
             const arrayBars = document.getElementsByClassName('array-bar');
 
@@ -142,24 +228,27 @@ export default class ColorSort extends React.Component {
                 }
                 // change color at current location being filled
                 else if (animationTask === 'changeColor') {
-                    const newColor = hsl_to_rgb(animations[i][2], 1, .5);
+                    const newColor = hsl_to_rgb(animations[i][2], this.state.saturation, this.state.lightness);
 
                     barOneStyle.backgroundColor = `rgb(${newColor[0]}, ${newColor[1]}, ${newColor[2]})`;
                 }
-            }, i * 5);
+            }, i * speed);
         }
 
+        // enable buttons again
         setTimeout(() => {
             for (let j = 0; j < elements.length; j++) {
                 elements[j].disabled = false;
                 elements[j].style.cursor = `pointer`;
             }
-        }, animations.length * 5)
+        }, animations.length * speed)
     }
 
     quickSort() {
         const animations = getQuickSortAnimations(this.state.array);
+        const speed = this.state.speed;
 
+        // disable buttons while sort is running
         const elements = document.getElementsByTagName('button');
         for (let j = 0; j < elements.length; j++) {
             elements[j].disabled = true;
@@ -207,25 +296,32 @@ export default class ColorSort extends React.Component {
                     barOneStyle.height = '50vh';
                     barTwoStyle.height = '80vh';
                 }
-            }, i * 5); 
+            }, i * speed); 
         }
 
+        // enable buttons again
         setTimeout(() => {
             for (let j = 0; j < elements.length; j++) {
                 elements[j].disabled = false;
                 elements[j].style.cursor = `pointer`;
             }
-        }, animations.length * 5)
+        }, animations.length * speed)
     }
 
     render() {
         return (
             <>
                 <div className="tool-bar">
-                    <button onClick={() => this.resetArray()}>Generate New Array</button>
                     <button onClick={() => this.bubbleSort()}>Bubble Sort</button>
                     <button onClick={() => this.mergeSort()}>Merge Sort</button>
                     <button onClick={() => this.quickSort()}>Quick Sort</button>
+
+                    <div id="speedSlider"></div>
+                    <div id="sizeSlider"></div>
+                    <div id="hueSlider"></div>
+                    <div id="saturationSlider"></div>
+                    <div id="lightnessSlider"></div>
+                    <button onClick={() => this.resetArray()}>Generate New Array</button>
                 </div>
                 
                 <div className="bar-container">    
