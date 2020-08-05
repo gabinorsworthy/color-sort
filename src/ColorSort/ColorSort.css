@@ -9,11 +9,13 @@ button {
     color: white;
     margin: 0 10px;
     padding: 5px 15px;
+    cursor: pointer;
 }
-
+/*
 button:hover {
     cursor: pointer;
 }
+*/
 
 button:focus {
     outline: 0;

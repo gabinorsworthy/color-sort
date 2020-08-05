@@ -59,6 +59,12 @@ export default class ColorSort extends React.Component {
     bubbleSort() {
         const animations = getBubbleSortAnimations(this.state.array);
 
+        const elements = document.getElementsByTagName('button');
+        for (let j = 0; j < elements.length; j++) {
+            elements[j].disabled = true;
+            elements[j].style.cursor = `not-allowed`;
+        }
+
         for (let i = 0; i < animations.length; i++) {
             const arrayBars = document.getElementsByClassName('array-bar');
 
@@ -84,10 +90,25 @@ export default class ColorSort extends React.Component {
                 }
             }, i * 5);
         }
+
+        setTimeout(() => {
+            for (let j = 0; j < elements.length; j++) {
+                elements[j].disabled = false;
+                elements[j].style.cursor = `pointer`;
+            }
+        }, animations.length * 5)
     }
 
     mergeSort() {
         const animations = getMergeSortAnimations(this.state.array);
+
+        
+        const elements = document.getElementsByTagName('button');
+        for (let j = 0; j < elements.length; j++) {
+            elements[j].disabled = true;
+            elements[j].style.cursor = `not-allowed`;
+        }
+        
 
         for (let i = 0; i < animations.length; i++) {
             const arrayBars = document.getElementsByClassName('array-bar');
@@ -108,7 +129,7 @@ export default class ColorSort extends React.Component {
                 }
                 // increase height of the location the color will change
                 // if it is not already equal to the items being compared
-                else if (animationTask == 'incHeightCurrent') {
+                else if (animationTask === 'incHeightCurrent') {
                     barOneStyle.height = '70vh';
                 }
                 // decrease height of bars no longer being compared
@@ -122,16 +143,28 @@ export default class ColorSort extends React.Component {
                 // change color at current location being filled
                 else if (animationTask === 'changeColor') {
                     const newColor = hsl_to_rgb(animations[i][2], 1, .5);
-                    console.log(newColor);
 
                     barOneStyle.backgroundColor = `rgb(${newColor[0]}, ${newColor[1]}, ${newColor[2]})`;
                 }
             }, i * 5);
         }
+
+        setTimeout(() => {
+            for (let j = 0; j < elements.length; j++) {
+                elements[j].disabled = false;
+                elements[j].style.cursor = `pointer`;
+            }
+        }, animations.length * 5)
     }
 
     quickSort() {
         const animations = getQuickSortAnimations(this.state.array);
+
+        const elements = document.getElementsByTagName('button');
+        for (let j = 0; j < elements.length; j++) {
+            elements[j].disabled = true;
+            elements[j].style.cursor = `not-allowed`;
+        }
 
         for (let i = 0; i < animations.length; i++) {
             const arrayBars = document.getElementsByClassName('array-bar');
@@ -176,6 +209,13 @@ export default class ColorSort extends React.Component {
                 }
             }, i * 5); 
         }
+
+        setTimeout(() => {
+            for (let j = 0; j < elements.length; j++) {
+                elements[j].disabled = false;
+                elements[j].style.cursor = `pointer`;
+            }
+        }, animations.length * 5)
     }
 
     render() {
