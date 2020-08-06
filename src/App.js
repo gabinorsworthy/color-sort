@@ -1,6 +1,5 @@
 import React from 'react';
 import ColorSort from './ColorSort/ColorSort'
-import './App.css';
 
 function App() {
   return (
