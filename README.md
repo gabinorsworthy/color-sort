@@ -19,3 +19,8 @@ When the application is open, it displays a random array of 100 items. Users can
 The user can adjust the speed the array sorts, the size of the array created, the hue range random values are picked from, and the saturation and lightness values using the slider inputs at the top of the screen. Once the user has adjusted the sliders to their desired settings, or at the end of a sort, they click "Generate New Array" to create an array with new random values based on the slider settings.
 
 Once the user has created an array they want sorted, they can select bubble sort, merge sort, or quick sort, and the sort will automatically begin. The user can then watch the colored bars gradually reach their sorted location in the array. Each sort will create animations based on how the algorithm works. The colored bars will change heights if they are being compared, the pivot point, or location where a swap is happening.
+
+# How the Application Works
+When a new array is generated, it selects N random values in the hue range, where N is the number on the "Adjust Size" slider and the hue range is the range on the "Hue Range" slider. Once those values are selected, the array bar colors are changed to correlate with the random hue value.
+
+When a user selects a sort, the algorithm is called and is sorted as it normally would with a sort algorithm. However, while the array is being sorted, the function also pushes "animations" when a pivot point is selected, values are being compared (or no longer being compared), or a value swap happens. These animations allow the user to see a visualization of the sort by increasing the heights and swapping the colors of bars.
