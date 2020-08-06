@@ -14,6 +14,6 @@ npm start
 # How to Use the Application
 When the application is open, it displays a random array of 100 items. Users can select the sort they want to see or change the settings for the array and generate a new one.
 
-![App Toolbar](/images/tool-bar.png)
+![App Toolbar](/images/tool-bar.PNG)
 
 The user can adjust the speed the array sorts, the size of the array created, the hue range random values are picked from, and the saturation and lightness values using the slider inputs at the top of the screen. 
