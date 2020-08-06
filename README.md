@@ -27,5 +27,5 @@ When a user selects a sort, the algorithm is called and is sorted as it normally
 
 The actual sort is performed using the hue value of the color. When you typically think of a color spectrum, it is likely sorted (value-wise) by hue, which is why I chose to use HSL (hue, saturation, lightness) values as opposed to RGB or hex values for my calculations. Below, you can compare a full color spectrum with the one created by sorting the bars in my application by hue.
 
-![Color Spectrum](/images/sorted-array.PNG)
+![Color Spectrum](/images/color-spectrum.PNG)
 ![Sorted Array](/images/sorted-array.PNG)
