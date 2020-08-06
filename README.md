@@ -24,3 +24,7 @@ Once the user has created an array they want sorted, they can select bubble sort
 When a new array is generated, it selects N random values in the hue range, where N is the number on the "Adjust Size" slider and the hue range is the range on the "Hue Range" slider. Once those values are selected, the bar colors are changed to correlate with the values in the array.
 
 When a user selects a sort, the algorithm is called and is sorted as it normally would with a sort algorithm. However, while the array is being sorted, the function also pushes "animations" when a pivot point is selected, values are being compared (or no longer being compared), or a value swap happens. These animations allow the user to see a visualization of the sort by increasing the heights and swapping the colors of bars.
+
+The actual sort is performed using the hue value of the color. When you look at a 2D color spectrum, it is likely sorted by hue, which is why I chose to use HSL (hue, saturation, lightness) values as opposed to RGB or hex values for my calculations. Below, you can compare a full color spectrum with the one created by sorting the bars in my application by hue.
+
+![Sorted Array](/images/sorted-array.PNG)
